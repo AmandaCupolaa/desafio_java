@@ -10,18 +10,20 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Memoria extends Componente {
-    Conexao conexao = new Conexao();
-    JdbcTemplate con = conexao.getConecaoDoBanco();
+    Conexao conexao;
+    JdbcTemplate con;
+    private final Looca looca = new Looca ();
+    private final com.github.britooo.looca.api.group.memoria.Memoria memoria;
 
-    public Memoria(String nome, Double limiteMaximo, String medida) {
-        super(nome, limiteMaximo, medida);
+    public Memoria (String nome, Double limiteMaximo, String medida) {
+        super (nome, limiteMaximo, medida);
+        this.conexao = new Conexao();
+        this.con = conexao.getConexaoDoBanco();
+        this.memoria = looca.getMemoria ();
     }
 
     @Override
     public void iniciarMonitoramento() {
-        Looca looca1 = new Looca();
-        com.github.britooo.looca.api.group.memoria.Memoria memoria = looca1.getMemoria();
-
         double memoriaUsage = memoria.getEmUso();
 
         String ramFormatted = new DecimalFormat("#.##").format((memoriaUsage * 4) / 1024.0 / 1024.0 / 1024.0).replace(",", ".");
@@ -38,5 +40,4 @@ public class Memoria extends Componente {
             e.printStackTrace();
         }
     }
-
 }

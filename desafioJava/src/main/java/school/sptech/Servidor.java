@@ -13,9 +13,8 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Servidor {
-
     Conexao conexao = new Conexao();
-    JdbcTemplate con = conexao.getConecaoDoBanco();
+    JdbcTemplate con = conexao.getConexaoDoBanco();
     private List<Componente> componentes;
 
     public Servidor() {
@@ -35,24 +34,24 @@ public class Servidor {
         Scanner leitor = new Scanner(System.in);
 
         System.out.println("""
-                +-------------------------+
-                |      Monitoramento      |
-                +-------------------------+
-                | 1) CPU                  |
-                | 2) Disco                |
-                | 3) Memória              |
-                +-------------------------+
+                +---------------------------------------------+
+                |    Escolha o componente a ser adicionado    |
+                +---------------------------------------------+
+                |    1) CPU                                   |
+                |    2) Disco                                 |
+                |    3) Memória                               |
+                +---------------------------------------------+
                  """);
 
         int escolha = leitor.nextInt();
 
         System.out.println("""
-                +-------------------------+
-                |      Defina a meta      |
-                +-------------------------+
+                +-------------------------------------------------+
+                |      Defina a métrica para esse componente      |
+                +-------------------------------------------------+
                  """);
 
-        double meta = leitor.nextInt();
+        double metricaComponente = leitor.nextInt();
 
         switch (escolha) {
             case 1:
@@ -64,7 +63,7 @@ public class Servidor {
                         System.out.println("Componente Cpu já existe no banco de dados.");
                     } else {
 
-                        Cpu cpu = new Cpu("Cpu", meta, "%");
+                        Cpu cpu = new Cpu("Cpu", metricaComponente, "%");
 
                         con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", cpu.getLimiteMaximo());
                         Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);

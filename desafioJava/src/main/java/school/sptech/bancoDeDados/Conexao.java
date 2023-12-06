@@ -4,7 +4,7 @@ import com.mysql.cj.jdbc.MysqlDataSource;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 public class Conexao {
-        private JdbcTemplate conecaoDoBanco;
+        private JdbcTemplate conexaoDoBanco;
 
         public Conexao(){
             MysqlDataSource mysqlDataSource = new MysqlDataSource();
@@ -12,12 +12,10 @@ public class Conexao {
             mysqlDataSource.setUser("DesafioJava");
             mysqlDataSource.setPassword("deafiojava2023");
 
-            conecaoDoBanco = new JdbcTemplate(mysqlDataSource);
-
+            conexaoDoBanco = new JdbcTemplate(mysqlDataSource);
         }
 
-        public JdbcTemplate getConecaoDoBanco(){
-            return conecaoDoBanco;
+        public JdbcTemplate getConexaoDoBanco(){
+            return conexaoDoBanco;
         }
-
 }

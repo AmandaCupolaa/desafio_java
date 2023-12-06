@@ -13,18 +13,21 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class Disco extends Componente {
-    Conexao conexao = new Conexao();
-    JdbcTemplate con = conexao.getConecaoDoBanco();
+    Conexao conexao;
+    JdbcTemplate con;
+    private final Looca looca = new Looca ();
+    private final DiscoGrupo grupoDiscos;
 
-    public Disco(String nome, Double limiteMaximo, String medida) {
-        super(nome, limiteMaximo, medida);
+    public Disco (String nome, Double limiteMaximo, String medida) {
+        super (nome, limiteMaximo, medida);
+        this.conexao = new Conexao();
+        this.con = conexao.getConexaoDoBanco();
+        this.grupoDiscos = looca.getGrupoDiscos ();
     }
 
     @Override
     public void iniciarMonitoramento() {
-        Looca looca1 = new Looca();
-        DiscoGrupo discoGrupo = looca1.getDisco();
-        List<Volume> volumes = discoGrupo.getVolumes();
+        List<Volume> volumes = grupoDiscos.getVolumes();
 
         double discoUsage = volumes.get(0).getDisponivel();
 
@@ -43,6 +46,4 @@ public class Disco extends Componente {
             e.printStackTrace();
         }
     }
-
-
 }

@@ -3,33 +3,25 @@ package school.sptech;
 import com.github.britooo.looca.api.group.discos.DiscoGrupo;
 import com.github.britooo.looca.api.group.memoria.Memoria;
 import com.github.britooo.looca.api.group.processador.Processador;
-import com.github.britooo.looca.api.group.processos.ProcessoGrupo;
-import com.github.britooo.looca.api.group.rede.Rede;
-import com.github.britooo.looca.api.group.sistema.Sistema;
-import com.github.britooo.looca.api.group.temperatura.Temperatura;
-import oshi.SystemInfo;
 
 public class Looca {
-
-    private final Processador processador;
-    private final Memoria memoria;
-    private final DiscoGrupo disco;
+    private final Looca looca = new Looca ();
+    private final DiscoGrupo grupoDiscos;
 
     public Looca() {
-        this.processador = new Processador();
-        this.memoria = new Memoria();
-        this.disco = new DiscoGrupo();
+        this.memoria = looca.getMemoria ();
+        this.grupoDiscos = looca.getGrupoDiscos ();
     }
 
-    public Processador getProcessador() {
+    public Processador getProcessador () {
         return processador;
     }
 
-    public Memoria getMemoria() {
+    public Memoria getMemoria () {
         return memoria;
     }
 
-    public DiscoGrupo getDisco() {
-        return disco;
+    public DiscoGrupo getGrupoDiscos () {
+        return grupoDiscos;
     }
 }

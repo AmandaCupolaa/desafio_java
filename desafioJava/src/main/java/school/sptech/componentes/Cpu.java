@@ -11,20 +11,20 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class Cpu extends Componente {
+    Conexao conexao;
+    JdbcTemplate con;
+    private final Looca looca = new Looca ();
+    private final Processador processador;
 
-    Conexao conexao = new Conexao();
-    JdbcTemplate con = conexao.getConecaoDoBanco();
-
-    public Cpu(String nome, Double limiteMaximo, String medida) {
-        super(nome, limiteMaximo, medida);
+    public Cpu (String nome, Double limiteMaximo, String medida) {
+        super (nome, limiteMaximo, medida);
+        this.conexao = new Conexao();
+        this.con = conexao.getConexaoDoBanco();
+        this.processador = looca.getProcessador ();
     }
 
     @Override
     public void iniciarMonitoramento() {
-
-        Looca looca1 = new Looca();
-        Processador processador = looca1.getProcessador();
-
         double cpuUsage = processador.getUso();
 
         String cpuFormatted = new DecimalFormat("#.##").format(cpuUsage).replace(",", ".");
@@ -40,7 +40,5 @@ public class Cpu extends Componente {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
     }
-
 }

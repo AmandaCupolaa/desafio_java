@@ -1,7 +1,5 @@
 package school.sptech;
 
-import school.sptech.componentes.Cpu;
-
 import java.util.Scanner;
 
 public class Teste {
@@ -35,7 +33,5 @@ public class Teste {
             case 4:
 
         }
-
-
     }
 }

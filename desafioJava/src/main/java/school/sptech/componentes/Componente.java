@@ -3,11 +3,8 @@ package school.sptech.componentes;
 import school.sptech.Monitoravel;
 
 public abstract class Componente implements Monitoravel {
-
     private String nome;
-
     private Double limiteMaximo;
-
     private String Medida;
 
     public Componente(String nome, Double limiteMaximo, String medida) {
