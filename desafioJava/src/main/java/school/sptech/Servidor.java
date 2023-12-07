@@ -4,73 +4,67 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import school.sptech.bancoDeDados.Conexao;
 import school.sptech.componentes.Componente;
-import school.sptech.componentes.Cpu;
-import school.sptech.componentes.Disco;
-import school.sptech.componentes.Memoria;
+import school.sptech.componentes.CpuController;
+import school.sptech.componentes.DiscoController;
+import school.sptech.componentes.MemoriaController;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Servidor {
-    Conexao conexao = new Conexao();
-    JdbcTemplate con = conexao.getConexaoDoBanco();
+    Scanner leitor;
     private List<Componente> componentes;
+    private CpuController cpuController;
+    private DiscoController discoController;
+    private MemoriaController memoriaController;
 
     public Servidor() {
         this.componentes = new ArrayList<>();
+        this.cpuController = new CpuController("CPu");
+        this.discoController = new DiscoController("Disco");
+        this.memoriaController = new MemoriaController("Memória");
+        this.leitor = new Scanner(System.in);
     }
 
-    public List<Componente> getComponentes() {
-        return componentes;
+    public void menuInicial() {
+        System.out.println("""
+               +-----------------------------------------+
+               |      Olá! Escolha a opção desejada      |
+               +-----------------------------------------+
+               |    1) Adicionar componente              |
+               |    2) Remover componente                |
+               |    3) Exibir componentes                |
+               |    4) Monitorar componentes             |
+               |    5) Sair                              |
+               +-----------------------------------------+
+                """);
     }
 
-    public void setComponentes(List<Componente> componentes) {
-        this.componentes = componentes;
-    }
-
-    public void adicionarComponente() {
-
-        Scanner leitor = new Scanner(System.in);
+    public void menuAdicionar() {
 
         System.out.println("""
                 +---------------------------------------------+
                 |    Escolha o componente a ser adicionado    |
                 +---------------------------------------------+
-                |    1) CPU                                   |
-                |    2) Disco                                 |
-                |    3) Memória                               |
+                |  1) CPU                                     |
+                |  2) Disco                                   |
+                   3) Memória                                 |
                 +---------------------------------------------+
                  """);
 
-        int escolha = leitor.nextInt();
+        int componenteEscolhido = leitor.nextInt();
 
-        System.out.println("""
-                +-------------------------------------------------+
-                |      Defina a métrica para esse componente      |
-                +-------------------------------------------------+
-                 """);
-
-        double metricaComponente = leitor.nextInt();
-
-        switch (escolha) {
+        switch (componenteEscolhido) {
             case 1:
                 try {
+                    boolean cpuExiste  = cpuController.verificarCPU();
 
-                    List<Integer> idCpus = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'Cpu'", Integer.class);
-
-                    if (!idCpus.isEmpty()) {
-                        System.out.println("Componente Cpu já existe no banco de dados.");
+                    if (cpuExiste) {
+                        cpuController.dadosCPU();
+                        componentes.add(cpuController);
                     } else {
-
-                        Cpu cpu = new Cpu("Cpu", metricaComponente, "%");
-
-                        con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", cpu.getLimiteMaximo());
-                        Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);
-                        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, fkMetrica) VALUES (?,?,?)", cpu.getNome(), cpu.getMedida(), idMetrica);
-
-                        System.out.println(cpu + " adicionado com sucesso!!!");
-                        componentes.add(cpu);
+                        System.out.println("A CPU já está cadastrada.");
                     }
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum resultado encontrado.");
@@ -79,130 +73,76 @@ public class Servidor {
                 break;
 
             case 2:
-
                 try {
+                    boolean discoExiste  = discoController.verificarDisco();
 
-                    List<Integer> idCpus = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'Disco'", Integer.class);
-
-                    if (!idCpus.isEmpty()) {
-                        System.out.println("Componente Cpu já existe no banco de dados.");
+                    if (discoExiste) {
+                        discoController.metricaDisco();
+                        componentes.add(discoController);
                     } else {
-
-                        Disco disco = new Disco("Disco", 20.0, "%");
-
-                        con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", disco.getLimiteMaximo());
-                        Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);
-                        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, fkMetrica) VALUES (?,?,?)", disco.getNome(), disco.getMedida(), idMetrica);
-
-                        System.out.println(disco + "adicionado com sucesso !!!");
-                        componentes.add(disco);
+                        System.out.println("O Disco já está cadastrado.");
                     }
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum resultado encontrado.");
                 }
 
                 break;
+
             case 3:
                 try {
+                    boolean memoriaExiste  = memoriaController.verificarMemoria();
 
-                    List<Integer> idCpus = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'Memória'", Integer.class);
-
-                    if (!idCpus.isEmpty()) {
-                        System.out.println("Componente Cpu já existe no banco de dados.");
+                    if (memoriaExiste) {
+                        memoriaController.metricaMemoria();
+                        componentes.add(memoriaController);
                     } else {
-
-                        Memoria memoria = new Memoria("Memória", 20.0, "%");
-
-                        con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", memoria.getLimiteMaximo());
-                        Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);
-
-                        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida,fkMetrica ) VALUES (?,?,?)", memoria.getNome(), memoria.getMedida(), idMetrica);
-                        System.out.println(memoria + "adicionado com sucesso !!!");
-                        componentes.add(memoria);
+                        System.out.println("A Memória já está cadastrada.");
                     }
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum resultado encontrado.");
                 }
 
                 break;
-        }
 
+        }
     }
 
-    public void removerComponente() {
-
-        Scanner leitor = new Scanner(System.in);
+    public void menuRemover() {
+        // remover os componentes da lista "componentes" - todo
         System.out.println("""
-                +-------------------------+
-                |      Monitoramento      |
-                +-------------------------+
-                | 1) CPU                  |
-                | 2) Disco                |
-                | 3) Memória              |
-                +-------------------------+
+                +-----------------------------------------------+
+                |      Escolha o componente a ser removido      |
+                +-----------------------------------------------+
+                |   1) CPU                                      |
+                |   2) Disco                                    |
+                |   3) Memória                                  |
+                +-----------------------------------------------+
                  """);
 
-        int escolha = leitor.nextInt();
+        int componenteEscolhido = leitor.nextInt();
 
-        switch (escolha) {
+        switch (componenteEscolhido) {
             case 1:
                 try {
-                    int count = con.queryForObject("SELECT COUNT(*) FROM Componente WHERE nomeComponente = 'Cpu'", Integer.class);
-
-                    if (count == 0) {
-                        System.out.println("Nenhum componente Cpu encontrado.");
-                    } else {
-                        con.update("DELETE FROM Componente WHERE nomeComponente = 'Cpu'");
-                        System.out.println("Componente Cpu removido com sucesso.");
-
-                        for (Componente componente: componentes){
-                            if (componente.getNome().equalsIgnoreCase("Cpu")){
-                                 componentes.remove(componente);
-                            }
-                        }
-
-                    }
+                    cpuController.removerCPU();
+                    componentes.remove(cpuController);
                 } catch (EmptyResultDataAccessException e) {
-                    System.out.println("Nenhum componente Cpu encontrado.");
+                    System.out.println("Nenhum componente CPU encontrado.");
                 }
                 break;
 
             case 2:
                 try {
-                    int count = con.queryForObject("SELECT COUNT(*) FROM Componente WHERE nomeComponente = 'Disco'", Integer.class);
-
-                    if (count == 0) {
-                        System.out.println("Nenhum componente Disco encontrado.");
-                    } else {
-                        con.update("DELETE FROM Componente WHERE nomeComponente = 'Disco'");
-                        System.out.println("Componente Disco removido com sucesso.");
-
-                        for (Componente componente: componentes){
-                            if (componente.getNome().equalsIgnoreCase("Cpu")){
-                                componentes.remove(componente);
-                            }
-                        }
-                    }
+                    discoController.removerDisco();
+                    componentes.remove(discoController);
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum componente Disco encontrado.");
                 }
                 break;
             case 3:
                 try {
-                    int count = con.queryForObject("SELECT COUNT(*) FROM Componente WHERE nomeComponente = 'Memória'", Integer.class);
-
-                    if (count == 0) {
-                        System.out.println("Nenhum componente Memória encontrado.");
-                    } else {
-                        con.update("DELETE FROM Componente WHERE nomeComponente = 'Memória'");
-                        System.out.println("Componente Memória removido com sucesso.");
-
-                        for (Componente componente: componentes){
-                            if (componente.getNome().equalsIgnoreCase("Cpu")){
-                                componentes.remove(componente);
-                            }
-                        }
-                    }
+                    memoriaController.removerMemoria();
+                    componentes.remove(memoriaController);
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum componente Memória encontrado.");
                 }
@@ -216,4 +156,11 @@ public class Servidor {
         return componentes;
     }
 
+    public List<Componente> getComponentes() {
+        return componentes;
+    }
+
+    public void setComponentes(List<Componente> componentes) {
+        this.componentes = componentes;
+    }
 }

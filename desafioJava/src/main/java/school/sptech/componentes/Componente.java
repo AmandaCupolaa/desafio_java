@@ -1,16 +1,20 @@
 package school.sptech.componentes;
 
-import school.sptech.Monitoravel;
-
-public abstract class Componente implements Monitoravel {
+public abstract class Componente{
+    private int id;
     private String nome;
-    private Double limiteMaximo;
-    private String Medida;
+    private double metrica;
 
-    public Componente(String nome, Double limiteMaximo, String medida) {
+    public Componente(String nome) {
         this.nome = nome;
-        this.limiteMaximo = limiteMaximo;
-        Medida = medida;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNome() {
@@ -21,28 +25,19 @@ public abstract class Componente implements Monitoravel {
         this.nome = nome;
     }
 
-    public Double getLimiteMaximo() {
-        return limiteMaximo;
+    public double getMetrica() {
+        return metrica;
     }
 
-    public void setLimiteMaximo(Double limiteMaximo) {
-        this.limiteMaximo = limiteMaximo;
-    }
-
-    public String getMedida() {
-        return Medida;
-    }
-
-    public void setMedida(String medida) {
-        Medida = medida;
+    public void setMetrica(double metrica) {
+        this.metrica = metrica;
     }
 
     @Override
     public String toString() {
         return "Componente{" +
                 "nome='" + nome + '\'' +
-                ", limiteMaximo=" + limiteMaximo +
-                ", Medida='" + Medida + '\'' +
+                ", metrica='" + metrica + '\'' +
                 '}';
     }
 }
