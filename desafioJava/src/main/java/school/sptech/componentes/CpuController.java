@@ -19,17 +19,19 @@ public class CpuController extends Componente{
         this.cpuDAO = new CpuDAO();
     }
 
-    public boolean verificarCPU() {
+    @Override
+    public boolean isCadastrado() {
         return cpuDAO.verificarComponente();
     }
 
-    public void dadosCPU() {
+    @Override
+    public void definirMetrica() {
         Scanner leitor = new Scanner(System.in);
 
         System.out.println("""
-                +-------------------------------------------------+
-                |      Defina a métrica para esse componente      |
-                +-------------------------------------------------+
+                +---------------------------------------+
+                |      Defina a métrica para a CPU      |
+                +---------------------------------------+
                  """);
 
         super.setMetrica(leitor.nextInt());
@@ -41,7 +43,8 @@ public class CpuController extends Componente{
         cpuDAO.removerComponente();
     }
 
-    public void monitorarCPU() {
+    @Override
+    public void dadosComponente() {
         double cpuUsage = processador.getUso();
 
         String cpuFormatted = new DecimalFormat("#.##").format(cpuUsage).replace(",", ".");

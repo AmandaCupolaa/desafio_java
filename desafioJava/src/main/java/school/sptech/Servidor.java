@@ -1,8 +1,6 @@
 package school.sptech;
 
 import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import school.sptech.bancoDeDados.Conexao;
 import school.sptech.componentes.Componente;
 import school.sptech.componentes.CpuController;
 import school.sptech.componentes.DiscoController;
@@ -14,16 +12,17 @@ import java.util.Scanner;
 
 public class Servidor {
     Scanner leitor;
-    private List<Componente> componentes;
-    private CpuController cpuController;
-    private DiscoController discoController;
-    private MemoriaController memoriaController;
+    private final List<Componente> componentes;
+    private final CpuController cpuController;
+    private final DiscoController discoController;
+    private final MemoriaController memoriaController;
 
     public Servidor() {
         this.componentes = new ArrayList<>();
+        // sla acho que ta errado - todo
         this.cpuController = new CpuController("CPU");
         this.discoController = new DiscoController("Disco");
-        this.memoriaController = new MemoriaController("Memória");
+        this.memoriaController = new MemoriaController("Memória RAM");
         this.leitor = new Scanner(System.in);
     }
 
@@ -55,12 +54,12 @@ public class Servidor {
         int componenteEscolhido = leitor.nextInt();
 
         switch (componenteEscolhido) {
-            case 1:
+            case 1 -> {
                 try {
-                    boolean cpuExiste  = cpuController.verificarCPU();
+                    boolean cpuExiste = cpuController.isCadastrado();
 
                     if (!cpuExiste) {
-                        cpuController.dadosCPU();
+                        cpuController.definirMetrica();
                         componentes.add(cpuController);
                     } else {
                         System.out.println("A CPU já está cadastrada.");
@@ -68,15 +67,13 @@ public class Servidor {
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum resultado encontrado.");
                 }
-
-                break;
-
-            case 2:
+            }
+            case 2 -> {
                 try {
-                    boolean discoExiste  = discoController.verificarDisco();
+                    boolean discoExiste = discoController.isCadastrado();
 
                     if (!discoExiste) {
-                        discoController.metricaDisco();
+                        discoController.definirMetrica();
                         componentes.add(discoController);
                     } else {
                         System.out.println("O Disco já está cadastrado.");
@@ -84,15 +81,13 @@ public class Servidor {
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum resultado encontrado.");
                 }
-
-                break;
-
-            case 3:
+            }
+            case 3 -> {
                 try {
-                    boolean memoriaExiste  = memoriaController.verificarMemoria();
+                    boolean memoriaExiste = memoriaController.isCadastrado();
 
                     if (!memoriaExiste) {
-                        memoriaController.metricaMemoria();
+                        memoriaController.definirMetrica();
                         componentes.add(memoriaController);
                     } else {
                         System.out.println("A Memória já está cadastrada.");
@@ -100,9 +95,7 @@ public class Servidor {
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum resultado encontrado.");
                 }
-
-                break;
-
+            }
         }
     }
 
@@ -120,45 +113,36 @@ public class Servidor {
         int componenteEscolhido = leitor.nextInt();
 
         switch (componenteEscolhido) {
-            case 1:
+            case 1 -> {
                 try {
                     cpuController.removerCPU();
                     componentes.remove(cpuController);
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum componente CPU encontrado.");
                 }
-                break;
-
-            case 2:
+            }
+            case 2 -> {
                 try {
                     discoController.removerDisco();
                     componentes.remove(discoController);
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum componente Disco encontrado.");
                 }
-                break;
-            case 3:
+            }
+            case 3 -> {
                 try {
                     memoriaController.removerMemoria();
                     componentes.remove(memoriaController);
                 } catch (EmptyResultDataAccessException e) {
                     System.out.println("Nenhum componente Memória encontrado.");
                 }
-                break;
+            }
         }
 
     }
 
-    public List<Componente> exibirComponentes() {
-        System.out.println("Componentes sendo monitorados: " + componentes);
-        return componentes;
+    public void exibirComponentes() {
+        System.out.println("Componentes sendo monitorados: \n" + componentes);
     }
 
-    public List<Componente> getComponentes() {
-        return componentes;
-    }
-
-    public void setComponentes(List<Componente> componentes) {
-        this.componentes = componentes;
-    }
 }

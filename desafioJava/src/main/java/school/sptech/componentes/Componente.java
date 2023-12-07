@@ -8,22 +8,9 @@ public abstract class Componente{
     public Componente(String nome) {
         this.nome = nome;
     }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public abstract boolean isCadastrado();
+    public abstract void definirMetrica();
+    public abstract void dadosComponente();
 
     public double getMetrica() {
         return metrica;
@@ -35,9 +22,9 @@ public abstract class Componente{
 
     @Override
     public String toString() {
-        return "Componente{" +
-                "nome='" + nome + '\'' +
-                ", metrica='" + metrica + '\'' +
-                '}';
+        return """
+                \nComponente - %s
+                Métrica - %.2f
+                """.formatted(nome, metrica);
     }
 }

@@ -20,17 +20,19 @@ public class MemoriaController extends Componente{
         this.memoriaDAO = new MemoriaDAO();
     }
 
-    public boolean verificarMemoria() {
+    @Override
+    public boolean isCadastrado() {
         return memoriaDAO.verificarComponente();
     }
 
-    public void metricaMemoria() {
+    @Override
+    public void definirMetrica() {
         Scanner leitor = new Scanner(System.in);
 
         System.out.println("""
-                +-------------------------------------------------+
-                |      Defina a métrica para esse componente      |
-                +-------------------------------------------------+
+                +---------------------------------------+
+                |      Defina a métrica para a RAM      |
+                +---------------------------------------+
                  """);
 
         super.setMetrica(leitor.nextInt());
@@ -43,7 +45,8 @@ public class MemoriaController extends Componente{
         memoriaDAO.removerComponente();
     }
 
-    public void monitorarMemoria() {
+    @Override
+    public void dadosComponente() {
         double memoriaUsage = memoria.getEmUso();
 
         String ramFormatted = new DecimalFormat("#.##").format((memoriaUsage * 4) / 1024.0 / 1024.0 / 1024.0).replace(",", ".");

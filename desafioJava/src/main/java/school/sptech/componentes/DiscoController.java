@@ -21,17 +21,19 @@ public class DiscoController extends Componente{
         this.discoDAO = new DiscoDAO();
     }
 
-    public boolean verificarDisco() {
+    @Override
+    public boolean isCadastrado() {
         return discoDAO.verificarComponente();
     }
 
-    public void metricaDisco() {
+    @Override
+    public void definirMetrica() {
         Scanner leitor = new Scanner(System.in);
 
         System.out.println("""
-                +-------------------------------------------------+
-                |      Defina a métrica para esse componente      |
-                +-------------------------------------------------+
+                +-----------------------------------------+
+                |      Defina a métrica para o Disco      |
+                +-----------------------------------------+
                  """);
 
         super.setMetrica(leitor.nextInt());
@@ -44,7 +46,8 @@ public class DiscoController extends Componente{
         discoDAO.removerComponente();
     }
 
-    public void monitorarDisco() {
+    @Override
+    public void dadosComponente() {
         List<Volume> volumes = grupoDiscos.getVolumes();
 
         double discoUsage = volumes.get(0).getDisponivel();
