@@ -25,7 +25,8 @@ public class TesteMain {
                     servidor.exibirComponentes();
                     break;
                 case 4:
-
+                    servidor.menuMonitoramento();
+                    break;
             }
         } while (opcaoEscolhida != 5);
     }

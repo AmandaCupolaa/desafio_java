@@ -145,4 +145,43 @@ public class Servidor {
         System.out.println("Componentes sendo monitorados: \n" + componentes);
     }
 
+    public void menuMonitoramento() {
+        System.out.println("""
+                +-----------------------------------------------------+
+                |      Escolha o componente que deseja monitorar      |
+                +-----------------------------------------------------+
+                |   1) CPU                                            |
+                |   2) Disco                                          |
+                |   3) Memória                                        |
+                +-----------------------------------------------------+
+                 """);
+
+        int componenteEscolhido = leitor.nextInt();
+
+        switch (componenteEscolhido) {
+            case 1 -> {
+                try {
+                    cpuController.dadosComponente();
+                } catch (EmptyResultDataAccessException e) {
+                    System.out.println("A CPU não está cadastrada.");
+                }
+            }
+            case 2 -> {
+                try {
+                    discoController.dadosComponente();
+                } catch (EmptyResultDataAccessException e) {
+                    System.out.println("O Disco não está cadastrado.");
+                }
+            }
+            case 3 -> {
+                try {
+                    memoriaController.dadosComponente();
+                } catch (EmptyResultDataAccessException e) {
+                    System.out.println("A Memória não está cadastrada.");
+                }
+            }
+        }
+
+    }
+
 }
