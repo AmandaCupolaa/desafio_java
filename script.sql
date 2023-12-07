@@ -16,7 +16,7 @@ CREATE TABLE Componente(
 CREATE TABLE Registro (
 	idRegistro INT PRIMARY KEY AUTO_INCREMENT,
     registro FLOAT,
-	dateDado DATETIME,
+	dataHora DATETIME,
 	fkComponente INT,
 	CONSTRAINT fkComponente FOREIGN KEY (fkComponente) REFERENCES Componente(idComponente)
 );
