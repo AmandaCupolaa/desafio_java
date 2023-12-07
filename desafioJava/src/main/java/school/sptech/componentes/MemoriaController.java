@@ -50,6 +50,6 @@ public class MemoriaController extends Componente{
         String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         // mudar tipo pra double, não String - todo
-        memoriaDAO.iniciarMonitoramento(ramFormatted, dataAtual);
+//        memoriaDAO.iniciarMonitoramento(ramFormatted, dataAtual);
     }
 }

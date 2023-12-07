@@ -18,12 +18,12 @@ public class DiscoDAO implements Operavel {
 
     @Override
     public boolean verificarComponente() {
-        boolean existeDisco = true;
+        boolean existeDisco = false;
 
         List<Integer> idDiscos = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'Disco'", Integer.class);
 
-        if (idDiscos.isEmpty()) {
-            existeDisco = false;
+        if (!idDiscos.isEmpty()) {
+            existeDisco = true;
         }
 
         return existeDisco;
@@ -32,9 +32,7 @@ public class DiscoDAO implements Operavel {
     @Override
     public void adicionarComponente(double metrica) {
 
-        con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", metrica);
-        Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);
-        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, fkMetrica) VALUES (?,?,?)", "'Disco'", "'%'", idMetrica);
+        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, metricaComponente) VALUES (?,?, ?)", "Disco", "%", metrica);
 
         System.out.println("Disco adicionado com sucesso!!!");
 

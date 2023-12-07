@@ -16,13 +16,14 @@ public class CpuDAO implements Operavel {
         this.con = conexao.getConexaoDoBanco();
     }
 
+    @Override
     public boolean verificarComponente() {
-        boolean existeCPU = true;
+        boolean existeCPU = false;
 
         List<Integer> idCpus = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'CPU'", Integer.class);
 
-        if (idCpus.isEmpty()) {
-            existeCPU = false;
+        if (!idCpus.isEmpty()) {
+            existeCPU = true;
         }
 
         return existeCPU;
@@ -31,9 +32,7 @@ public class CpuDAO implements Operavel {
     @Override
     public void adicionarComponente(double metrica) {
 
-        con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", metrica);
-        Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);
-        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, fkMetrica) VALUES (?,?,?)", "'CPU'", "'%'", idMetrica);
+        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, metricaComponente) VALUES (?,?, ?)", "CPU", "%", metrica);
 
         System.out.println("CPU adicionada com sucesso!!!");
 

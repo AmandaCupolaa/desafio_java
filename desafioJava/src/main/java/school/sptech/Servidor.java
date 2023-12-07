@@ -21,7 +21,7 @@ public class Servidor {
 
     public Servidor() {
         this.componentes = new ArrayList<>();
-        this.cpuController = new CpuController("CPu");
+        this.cpuController = new CpuController("CPU");
         this.discoController = new DiscoController("Disco");
         this.memoriaController = new MemoriaController("Memória");
         this.leitor = new Scanner(System.in);
@@ -42,7 +42,6 @@ public class Servidor {
     }
 
     public void menuAdicionar() {
-
         System.out.println("""
                 +---------------------------------------------+
                 |    Escolha o componente a ser adicionado    |
@@ -60,7 +59,7 @@ public class Servidor {
                 try {
                     boolean cpuExiste  = cpuController.verificarCPU();
 
-                    if (cpuExiste) {
+                    if (!cpuExiste) {
                         cpuController.dadosCPU();
                         componentes.add(cpuController);
                     } else {
@@ -76,7 +75,7 @@ public class Servidor {
                 try {
                     boolean discoExiste  = discoController.verificarDisco();
 
-                    if (discoExiste) {
+                    if (!discoExiste) {
                         discoController.metricaDisco();
                         componentes.add(discoController);
                     } else {
@@ -92,7 +91,7 @@ public class Servidor {
                 try {
                     boolean memoriaExiste  = memoriaController.verificarMemoria();
 
-                    if (memoriaExiste) {
+                    if (!memoriaExiste) {
                         memoriaController.metricaMemoria();
                         componentes.add(memoriaController);
                     } else {
@@ -108,7 +107,6 @@ public class Servidor {
     }
 
     public void menuRemover() {
-        // remover os componentes da lista "componentes" - todo
         System.out.println("""
                 +-----------------------------------------------+
                 |      Escolha o componente a ser removido      |

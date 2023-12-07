@@ -18,12 +18,12 @@ public class MemoriaDAO implements Operavel {
 
     @Override
     public boolean verificarComponente() {
-        boolean existeMemoria = true;
+        boolean existeMemoria = false;
 
-        List<Integer> idCpus = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'Memória RAM'", Integer.class);
+        List<Integer> idMemorias = con.queryForList("SELECT idComponente FROM Componente WHERE nomeComponente = 'Memória RAM'", Integer.class);
 
-        if (idCpus.isEmpty()) {
-            existeMemoria = false;
+        if (!idMemorias.isEmpty()) {
+            existeMemoria = true;
         }
 
         return existeMemoria;
@@ -32,9 +32,7 @@ public class MemoriaDAO implements Operavel {
     @Override
     public void adicionarComponente(double metrica) {
 
-        con.update("INSERT INTO Metrica (limiteMaximo) VALUES (?)", metrica);
-        Integer idMetrica = con.queryForObject("SELECT idMetrica FROM Metrica ORDER BY idMetrica DESC LIMIT 1", Integer.class);
-        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, fkMetrica) VALUES (?,?,?)", "'Memória RAM'", "'%'", idMetrica);
+        con.update("INSERT INTO Componente (nomeComponente, unidadeMedida, metricaComponente) VALUES (?,?, ?)", "Memória RAM", "%", metrica);
 
         System.out.println("Memória adicionada com sucesso!!!");
 
@@ -42,12 +40,12 @@ public class MemoriaDAO implements Operavel {
 
     @Override
     public void removerComponente() {
-        int count = con.queryForObject("SELECT COUNT(*) FROM Componente WHERE nomeComponente = 'Memória'", Integer.class);
+        int count = con.queryForObject("SELECT COUNT(*) FROM Componente WHERE nomeComponente = 'Memória RAM'", Integer.class);
 
         if (count == 0) {
             System.out.println("Nenhum componente Memória encontrado.");
         } else {
-            con.update("DELETE FROM Componente WHERE nomeComponente = 'Memória'");
+            con.update("DELETE FROM Componente WHERE nomeComponente = 'Memória RAM'");
             System.out.println("Memória removida com sucesso.");
 
         }

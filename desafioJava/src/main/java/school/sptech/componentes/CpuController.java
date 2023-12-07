@@ -48,7 +48,7 @@ public class CpuController extends Componente{
         String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         // mudar tipo pra double, não String - todo
-        cpuDAO.iniciarMonitoramento(cpuFormatted, dataAtual);
+//        cpuDAO.iniciarMonitoramento(cpuFormatted, dataAtual);
 
     }
 }

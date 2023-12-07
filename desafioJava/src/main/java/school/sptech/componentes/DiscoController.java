@@ -53,7 +53,7 @@ public class DiscoController extends Componente{
         String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
         // mudar tipo pra double, não String - todo
-        discoDAO.iniciarMonitoramento(discoFormmatted, dataAtual);
+//        discoDAO.iniciarMonitoramento(discoFormmatted, dataAtual);
 
     }
 }
