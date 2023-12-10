@@ -5,6 +5,7 @@ import school.sptech.Operavel;
 import school.sptech.bancoDeDados.Conexao;
 
 import java.util.List;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 public class CpuDAO implements Operavel {
@@ -54,14 +55,10 @@ public class CpuDAO implements Operavel {
     @Override
     public void iniciarMonitoramento(double registro, String dataHora) {
 
-        Integer id = con.queryForObject("SELECT idComponente FROM Componente WHERE nomeComponente = 'CPU'", Integer.class);
-        con.update("INSERT INTO Registro (registro, dataHora, fkComponente) VALUES (?,?,?)", registro, dataHora, id);
+            Integer id = con.queryForObject("SELECT idComponente FROM Componente WHERE nomeComponente = 'CPU'", Integer.class);
+            con.update("INSERT INTO Registro (registro, dataHora, fkComponente) VALUES (?,?,?)", registro, dataHora, id);
+            System.out.println("CPU: " + registro);
 
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
     }
 }

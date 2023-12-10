@@ -1,7 +1,6 @@
 package school.sptech.componentes;
 
 public abstract class Componente{
-    private int id;
     private String nome;
     private double metrica;
 

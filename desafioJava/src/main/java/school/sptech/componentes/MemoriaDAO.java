@@ -54,14 +54,8 @@ public class MemoriaDAO implements Operavel {
     @Override
     public void iniciarMonitoramento(double registro, String dataHora) {
 
-        Integer id = con.queryForObject("SELECT idComponente FROM Componente WHERE nomeComponente = 'Memória'", Integer.class);
+        Integer id = con.queryForObject("SELECT idComponente FROM Componente WHERE nomeComponente = 'Memória RAM'", Integer.class);
         con.update("INSERT INTO Registro (registro, dataHora,fkComponente) VALUES (?,?,?)", registro, dataHora, id);
-
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
 
     }
 }

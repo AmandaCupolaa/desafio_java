@@ -2,11 +2,13 @@ package school.sptech.componentes;
 
 import com.github.britooo.looca.api.core.Looca;
 import com.github.britooo.looca.api.group.processador.Processador;
+import school.sptech.TimerTask.Mensagem;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.Timer;
 
 public class CpuController extends Componente{
     private final Looca looca = new Looca ();
@@ -45,13 +47,24 @@ public class CpuController extends Componente{
 
     @Override
     public void dadosComponente() {
+
+        Timer agendador = new Timer();
+        Scanner in = new Scanner(System.in);
+
         double cpuUsage = processador.getUso();
 
-        String cpuFormatted = new DecimalFormat("#.##").format(cpuUsage).replace(",", ".");
+        double cpuFormatted = (double) Math.round(cpuUsage * 100) / 100;
         String dataAtual = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
 
-        // mudar tipo pra double, não String - todo
-//        cpuDAO.iniciarMonitoramento(cpuFormatted, dataAtual);
+        cpuDAO.iniciarMonitoramento(cpuFormatted, dataAtual);
 
+        System.out.println("Para sair pressione qualquer tecla");
+        String mensagemEibir = "Cpu: " + cpuFormatted;
+
+        Mensagem tarefa1 = new Mensagem(mensagemEibir, 1000,5000);
+        agendador.schedule(tarefa1, tarefa1.getDelay(), tarefa1.getPeriodo());
+
+        in.nextLine();
+        agendador.cancel();
     }
 }
